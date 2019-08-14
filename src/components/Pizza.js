@@ -9,7 +9,7 @@ const Pizza = props => {
       <td>
         <button
           type="button"
-          onClick={props.handleOnClick}
+          onClick={props.handleOnEditClick}
           className="btn btn-primary"
           data-id={props.pizza.id}
         >

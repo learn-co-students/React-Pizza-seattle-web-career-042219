@@ -7,7 +7,7 @@ class PizzaList extends Component {
         <Pizza
           pizza={pizza}
           key={pizza.id}
-          handleOnClick={this.props.handleOnClick}
+          handleOnEditClick={this.props.handleOnEditClick}
         />
       );
     });
@@ -21,12 +21,7 @@ class PizzaList extends Component {
             <th scope="col">Edit</th>
           </tr>
         </thead>
-        <tbody>
-          {
-            //render Pizza here
-            pizzaList
-          }
-        </tbody>
+        <tbody>{pizzaList}</tbody>
       </table>
     );
   }

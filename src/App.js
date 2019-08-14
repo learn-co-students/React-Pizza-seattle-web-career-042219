@@ -6,21 +6,20 @@ import PizzaList from "./containers/PizzaList";
 class App extends Component {
   state = {
     pizzas: [],
-    selectedPizza: []
+    selectedPizza: [],
+    topping: "",
+    size: "",
+    vegetarian: ""
   };
 
   componentDidMount() {
     fetch("http://localhost:3000/pizzas")
       .then(res => res.json())
-      // .then(res => {
-      //   console.log(res);
-      //   return res;
-      // })
       .then(res => this.setState({ pizzas: res }))
       .catch(err => console.log(err));
   }
 
-  handleOnClick = e => {
+  handleOnEditClick = e => {
     e.preventDefault();
     const selectedPizza = this.state.pizzas.filter(
       pizza => pizza.id === parseInt(e.target.dataset.id, 10)
@@ -33,9 +32,47 @@ class App extends Component {
     //     () => console.log(this.state.selectedPizza)
     //   )
     // });
-    this.setState({ selectedPizza: selectedPizza }, () =>
-      console.log(this.state.selectedPizza)
+    console.log(selectedPizza[0]);
+    this.setState(
+      {
+        selectedPizza: selectedPizza,
+        topping: selectedPizza[0].topping,
+        size: selectedPizza[0].size,
+        vegetarian: selectedPizza[0].vegetarian
+      },
+      () => console.log(this.state.vegetarian)
     );
+  };
+
+  // handleFormOnChange = e => {
+  //   console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
+  //   const newSelectedPizza = [...this.state.selectedPizza][0];
+  //   console.log("newSelectedPizza=", newSelectedPizza);
+  //   newSelectedPizza[e.target.name] = e.target.value;
+  //   console.log("newSelectedPizza=", newSelectedPizza);
+  //   this.setState({ selectedPizza: newSelectedPizza }, () =>
+  //     console.log("this.state.selectedPizza=", this.state.selectedPizza)
+  //   );
+  // };
+
+  handleFormOnChange = e => {
+    console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
+    console.log(e.target.name);
+    let newBool = true;
+    if (e.target.name === "vegetarian") {
+      if (e.target.value === "false" || e.target.value === false) {
+        newBool = false;
+      } else {
+      }
+      this.setState({ vegetarian: newBool });
+    } else {
+      this.setState(
+        {
+          [e.target.name]: e.target.value
+        },
+        () => console.log(this.state)
+      );
+    }
   };
 
   handleOnSubmit = e => {
@@ -47,25 +84,31 @@ class App extends Component {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        id: this.state.selectedPizza.id,
-        topping: this.state.selectedPizza.topping,
-        size: this.state.selectedPizza.size,
-        vegetarian: this.state.selectedPizza.vegetarian
+        id: this.state.selectedPizza.id ? this.state.selectedPizza.id : null,
+        topping: this.state.topping,
+        size: this.state.size,
+        vegetarian: this.state.vegetarian
       })
     })
       .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        return res;
+      })
+      .then(res => this.pessRerender(res))
       .catch(err => console.log(err));
   };
 
-  handleFormOnChange = e => {
-    console.log("handleFormOnChange fires");
-    console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
-    const newSelectedPizza = [...this.state.selectedPizza][0];
-    console.log("newSelectedPizza=", newSelectedPizza);
-    newSelectedPizza[e.target.name] = e.target.value;
-    console.log("newSelectedPizza=", newSelectedPizza);
-    this.setState({ selectedPizza: newSelectedPizza }, () =>
-      console.log(this.state.selectedPizza)
+  pessRerender = res => {
+    this.setState(
+      prevState => ({
+        topping: "",
+        size: "",
+        vegetarian: "",
+        selectedPizza: "",
+        pizzas: [...prevState.pizzas, res]
+      }),
+      () => console.log(this.state)
     );
   };
 
@@ -75,11 +118,16 @@ class App extends Component {
         <Header />
         <PizzaForm
           selectedPizza={this.state.selectedPizza[0]}
+          topping={this.state.topping}
+          size={this.state.size}
+          vegetarian={this.state.vegetarian}
           handleFormOnChange={this.handleFormOnChange}
+          handleRadioChange={this.handleRadioChange}
+          handleOnSubmit={this.handleOnSubmit}
         />
         <PizzaList
           pizzas={this.state.pizzas}
-          handleOnClick={this.handleOnClick}
+          handleOnEditClick={this.handleOnEditClick}
         />
       </Fragment>
     );

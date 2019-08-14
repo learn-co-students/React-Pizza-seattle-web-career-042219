@@ -16,16 +16,12 @@ class App extends Component {
       //   console.log(res);
       //   return res;
       // })
-      .then(res =>
-        this.setState({ pizzas: res }, () => console.log(this.state.pizzas))
-      )
+      .then(res => this.setState({ pizzas: res }))
       .catch(err => console.log(err));
   }
 
   handleOnClick = e => {
     e.preventDefault();
-    console.log(e.target.dataset.id);
-    console.log("handleOnClick fires");
     const selectedPizza = this.state.pizzas.filter(
       pizza => pizza.id === parseInt(e.target.dataset.id, 10)
     );
@@ -61,11 +57,26 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handleFormOnChange = e => {
+    console.log("handleFormOnChange fires");
+    console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
+    const newSelectedPizza = [...this.state.selectedPizza][0];
+    console.log("newSelectedPizza=", newSelectedPizza);
+    newSelectedPizza[e.target.name] = e.target.value;
+    console.log("newSelectedPizza=", newSelectedPizza);
+    this.setState({ selectedPizza: newSelectedPizza }, () =>
+      console.log(this.state.selectedPizza)
+    );
+  };
+
   render() {
     return (
       <Fragment>
         <Header />
-        <PizzaForm selectedPizza={this.state.selectedPizza[0]} />
+        <PizzaForm
+          selectedPizza={this.state.selectedPizza[0]}
+          handleFormOnChange={this.handleFormOnChange}
+        />
         <PizzaList
           pizzas={this.state.pizzas}
           handleOnClick={this.handleOnClick}

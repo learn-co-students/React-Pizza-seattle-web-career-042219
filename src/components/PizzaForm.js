@@ -10,8 +10,10 @@ const PizzaForm = props => {
           type="text"
           className="form-control"
           placeholder="Pizza Topping"
+          name="topping"
+          onChange={props.handleFormOnChange}
           value={
-            selectedPizza ? selectedPizza.topping : null
+            selectedPizza ? selectedPizza.topping : ""
             //Pizza Topping Should Go Here
             // null
             // props.pizza.topping
@@ -20,8 +22,10 @@ const PizzaForm = props => {
       </div>
       <div className="col">
         <select
-          value={selectedPizza ? selectedPizza.size : null}
+          value={selectedPizza ? selectedPizza.size : ""}
           className="form-control"
+          onChange={props.handleFormOnChange}
+          name="size"
         >
           <option value="Small">Small</option>
           <option value="Medium">Medium</option>
@@ -34,7 +38,9 @@ const PizzaForm = props => {
             className="form-check-input"
             type="radio"
             value="Vegetarian"
-            checked={selectedPizza ? selectedPizza.vegetarian : null}
+            name="vegetarian"
+            onChange={props.handleFormOnChange}
+            checked={selectedPizza ? selectedPizza.vegetarian : ""}
           />
           <label className="form-check-label">Vegetarian</label>
         </div>
@@ -43,7 +49,9 @@ const PizzaForm = props => {
             className="form-check-input"
             type="radio"
             value="Not Vegetarian"
-            checked={selectedPizza ? !selectedPizza.vegetarian : null}
+            name="vegetarian"
+            onChange={props.handleFormOnChange}
+            checked={selectedPizza ? !selectedPizza.vegetarian : ""}
           />
           <label className="form-check-label">Not Vegetarian</label>
         </div>

@@ -34,10 +34,7 @@ const PizzaForm = props => {
           <input
             className="form-check-input"
             type="radio"
-            // value="Vegetarian"
-            // value={props.vegetarian}
-            // value="true"
-            value={true}
+            value="true"
             name="vegetarian"
             // onChange={props.handleRadioChange}
             onChange={props.handleFormOnChange}
@@ -50,10 +47,7 @@ const PizzaForm = props => {
           <input
             className="form-check-input"
             type="radio"
-            // value="Not Vegetarian"
-            // value="false"
-            // value={props.vegetarian}
-            value={false}
+            value="false"
             name="vegetarian"
             // onChange={props.handleRadioChange}
             onChange={props.handleFormOnChange}

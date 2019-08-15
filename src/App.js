@@ -45,21 +45,31 @@ class App extends Component {
   // };
 
   handleFormOnChange = e => {
-    console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
+    console.log("this.state.selectedPizza.id=", this.state.selectedPizza.id);
+    // if (
+    //   e.target.name === "vegetarian" &&
+    //   (e.target.value === "false" || e.target.value === false)
+    // ) {
+    //   this.setState({ vegetarian: false });
+    // } else if (
+    //   e.target.name === "vegetarian" &&
+    //   (e.target.value === "true" || e.target.value === true)
+    // ) {
+    //   this.setState({ vegetarian: true });
+    // } else {
+    //   this.setState(
+    //     { vegetarian: newBool, [e.target.name]: e.target.value },
+    //     () => console.log(this.state)
+    //   );
+    // }
     let newBool = true;
     if (e.target.name === "vegetarian") {
       if (e.target.value === "false" || e.target.value === false) {
         newBool = false;
-      } else {
       }
       this.setState({ vegetarian: newBool });
     } else {
-      this.setState(
-        {
-          [e.target.name]: e.target.value
-        },
-        () => console.log(this.state)
-      );
+      this.setState({ [e.target.name]: e.target.value });
     }
   };
 
@@ -80,7 +90,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log("res in post call", res);
+        console.log("res in the post call", res);
         return res;
       })
       .then(res => this.pessRerender(res))
@@ -110,7 +120,6 @@ class App extends Component {
           size={this.state.size}
           vegetarian={this.state.vegetarian}
           handleFormOnChange={this.handleFormOnChange}
-          handleRadioChange={this.handleRadioChange}
           handleOnSubmit={this.handleOnSubmit}
         />
         <PizzaList

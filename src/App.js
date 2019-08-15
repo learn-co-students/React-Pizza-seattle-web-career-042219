@@ -24,24 +24,13 @@ class App extends Component {
     const selectedPizza = this.state.pizzas.filter(
       pizza => pizza.id === parseInt(e.target.dataset.id, 10)
     );
-    // this.setState({
-    //   selectedPizza: this.state.pizzas.filter(
-    //     pizza => {
-    //       pizza.id === parseInt(e.target.dataset.id, 10);
-    //     },
-    //     () => console.log(this.state.selectedPizza)
-    //   )
-    // });
     console.log(selectedPizza[0]);
-    this.setState(
-      {
-        selectedPizza: selectedPizza,
-        topping: selectedPizza[0].topping,
-        size: selectedPizza[0].size,
-        vegetarian: selectedPizza[0].vegetarian
-      },
-      () => console.log(this.state.vegetarian)
-    );
+    this.setState({
+      selectedPizza: selectedPizza,
+      topping: selectedPizza[0].topping,
+      size: selectedPizza[0].size,
+      vegetarian: selectedPizza[0].vegetarian
+    });
   };
 
   // handleFormOnChange = e => {
@@ -57,7 +46,6 @@ class App extends Component {
 
   handleFormOnChange = e => {
     console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
-    console.log(e.target.name);
     let newBool = true;
     if (e.target.name === "vegetarian") {
       if (e.target.value === "false" || e.target.value === false) {
@@ -92,7 +80,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
+        console.log("res in post call", res);
         return res;
       })
       .then(res => this.pessRerender(res))
@@ -108,7 +96,7 @@ class App extends Component {
         selectedPizza: "",
         pizzas: [...prevState.pizzas, res]
       }),
-      () => console.log(this.state)
+      () => console.log("state in pessRerender=", this.state)
     );
   };
 

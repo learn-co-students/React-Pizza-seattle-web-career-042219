@@ -6,7 +6,7 @@ import PizzaList from "./containers/PizzaList";
 class App extends Component {
   state = {
     pizzas: [],
-    selectedPizza: [],
+    selectedPizzaId: "",
     topping: "",
     size: "",
     vegetarian: ""
@@ -26,26 +26,14 @@ class App extends Component {
     );
     console.log(selectedPizza[0]);
     this.setState({
-      selectedPizza: selectedPizza,
+      selectedPizzaId: selectedPizza[0].id,
       topping: selectedPizza[0].topping,
       size: selectedPizza[0].size,
       vegetarian: selectedPizza[0].vegetarian
     });
   };
 
-  // handleFormOnChange = e => {
-  //   console.log("this.state.selectedPizza[0]=", this.state.selectedPizza[0]);
-  //   const newSelectedPizza = [...this.state.selectedPizza][0];
-  //   console.log("newSelectedPizza=", newSelectedPizza);
-  //   newSelectedPizza[e.target.name] = e.target.value;
-  //   console.log("newSelectedPizza=", newSelectedPizza);
-  //   this.setState({ selectedPizza: newSelectedPizza }, () =>
-  //     console.log("this.state.selectedPizza=", this.state.selectedPizza)
-  //   );
-  // };
-
   handleFormOnChange = e => {
-    console.log("this.state.selectedPizza.id=", this.state.selectedPizza.id);
     // if (
     //   e.target.name === "vegetarian" &&
     //   (e.target.value === "false" || e.target.value === false)
@@ -73,8 +61,40 @@ class App extends Component {
     }
   };
 
+  // handleOnSubmit = e => {
+  //   e.preventDefault();
+  //   fetch("http://localhost:3000/pizzas", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //       id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
+  //       topping: this.state.topping,
+  //       size: this.state.size,
+  //       vegetarian: this.state.vegetarian
+  //     })
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       console.log("res in the post call", res);
+  //       return res;
+  //     })
+  //     .then(res => this.pessRerender(res))
+  //     .catch(err => console.log(err));
+  // };
+
   handleOnSubmit = e => {
     e.preventDefault();
+    if (this.state.selectedPizzaId) {
+      this.handlePatch();
+    } else {
+      this.handlePost();
+    }
+  };
+
+  handlePost = () => {
     fetch("http://localhost:3000/pizzas", {
       method: "POST",
       headers: {
@@ -82,7 +102,7 @@ class App extends Component {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        id: this.state.selectedPizza.id ? this.state.selectedPizza.id : null,
+        id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
         topping: this.state.topping,
         size: this.state.size,
         vegetarian: this.state.vegetarian
@@ -97,13 +117,36 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  handlePatch = () => {
+    fetch("http://localhost:3000/pizzas", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
+        topping: this.state.topping,
+        size: this.state.size,
+        vegetarian: this.state.vegetarian
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log("res in the patch call", res);
+        return res;
+      })
+      .then(res => this.pessRerender(res))
+      .catch(err => console.log(err));
+  };
+
   pessRerender = res => {
     this.setState(
       prevState => ({
         topping: "",
         size: "",
         vegetarian: "",
-        selectedPizza: "",
+        selectedPizzaId: "",
         pizzas: [...prevState.pizzas, res]
       }),
       () => console.log("state in pessRerender=", this.state)
@@ -115,7 +158,7 @@ class App extends Component {
       <Fragment>
         <Header />
         <PizzaForm
-          selectedPizza={this.state.selectedPizza[0]}
+          // selectedPizza={this.state.selectedPizza[0]}
           topping={this.state.topping}
           size={this.state.size}
           vegetarian={this.state.vegetarian}

@@ -62,15 +62,9 @@
     },
     {
       "id": 11,
-      "topping": "abc",
-      "size": "Large",
-      "vegetarian": false
-    },
-    {
-      "id": 12,
-      "topping": "abas",
-      "size": "Medium",
-      "vegetarian": true
+      "topping": "",
+      "size": "",
+      "vegetarian": ""
     }
   ]
 }

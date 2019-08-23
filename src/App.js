@@ -46,7 +46,7 @@ class App extends Component {
   };
 
   handleOnSubmit = e => {
-    // if selectedPizzaId, then it is a PATCH, else post
+    // if selectedPizzaId, then it is a PATCH, else POST
     e.preventDefault();
     if (this.state.selectedPizzaId) {
       this.handlePatch();

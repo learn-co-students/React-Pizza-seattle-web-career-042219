@@ -3,20 +3,20 @@
     {
       "id": 1,
       "topping": "Plain",
-      "size": "Small",
+      "size": "Medium",
       "vegetarian": true
     },
     {
       "id": 2,
       "topping": "Pepperoni",
       "size": "Small",
-      "vegetarian": false
+      "vegetarian": true
     },
     {
       "id": 3,
       "topping": "Mushroom",
       "size": "Small",
-      "vegetarian": true
+      "vegetarian": false
     },
     {
       "id": 4,

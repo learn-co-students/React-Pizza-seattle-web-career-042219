@@ -33,10 +33,9 @@ class App extends Component {
     });
   };
 
-  handleFormOnChange = e => {
-    
-    let newBool = true;
+  handleFormOnChange = e => {x  
     if (e.target.name === "vegetarian") {
+      let newBool = true;
       if (e.target.value === "false" || e.target.value === false) {
         newBool = false;
       }
@@ -102,35 +101,8 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
-  // pessRerender = res => {
-  //   if (this.state.selectedPizzaId) {
-  //     // true means it is a patch, so map and update the previous pizzafalse is a put
-  //     this.setState(
-  //       prevState => ({
-  //         topping: "",
-  //         size: "",
-  //         vegetarian: "",
-  //         selectedPizzaId: "",
-  //         // pizzas: [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)]
-  //         pizzas: this.state.selectedPizzaId ? [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)] : [...prevState.pizzas, res]
-  //       })
-  //     );
-  //   } else {
-  //     // false is a post, so map through and append a pizza
-  //     this.setState(
-  //       prevState => ({
-  //         topping: "",
-  //         size: "",
-  //         vegetarian: "",
-  //         selectedPizzaId: "",
-  //         pizzas: [...prevState.pizzas, res]
-  //       })
-  //     );
-  //   }
-  // };
-
   pessRerender = res => {
-      // true means it is a patch, so map and update the previous pizzafalse is a put
+      // true means it is a patch, so map and update the previous pizza. false is a post, so append the new pizza
       this.setState(
         prevState => ({
           topping: "",

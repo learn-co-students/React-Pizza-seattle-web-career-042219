@@ -102,8 +102,34 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  // pessRerender = res => {
+  //   if (this.state.selectedPizzaId) {
+  //     // true means it is a patch, so map and update the previous pizzafalse is a put
+  //     this.setState(
+  //       prevState => ({
+  //         topping: "",
+  //         size: "",
+  //         vegetarian: "",
+  //         selectedPizzaId: "",
+  //         // pizzas: [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)]
+  //         pizzas: this.state.selectedPizzaId ? [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)] : [...prevState.pizzas, res]
+  //       })
+  //     );
+  //   } else {
+  //     // false is a post, so map through and append a pizza
+  //     this.setState(
+  //       prevState => ({
+  //         topping: "",
+  //         size: "",
+  //         vegetarian: "",
+  //         selectedPizzaId: "",
+  //         pizzas: [...prevState.pizzas, res]
+  //       })
+  //     );
+  //   }
+  // };
+
   pessRerender = res => {
-    if (this.state.selectedPizzaId) {
       // true means it is a patch, so map and update the previous pizzafalse is a put
       this.setState(
         prevState => ({
@@ -111,22 +137,10 @@ class App extends Component {
           size: "",
           vegetarian: "",
           selectedPizzaId: "",
-          pizzas: [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)]
+          pizzas: this.state.selectedPizzaId ? [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)] : [...prevState.pizzas, res]
         })
       );
-    } else {
-      // false is a post, so map through and append a pizza
-      this.setState(
-        prevState => ({
-          topping: "",
-          size: "",
-          vegetarian: "",
-          selectedPizzaId: "",
-          pizzas: [...prevState.pizzas, res]
-        })
-      );
-    }
-  };
+    } 
 
   render() {
     return (

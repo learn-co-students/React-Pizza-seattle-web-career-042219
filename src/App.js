@@ -33,7 +33,7 @@ class App extends Component {
     });
   };
 
-  handleFormOnChange = e => {x  
+  handleFormOnChange = e => {
     if (e.target.name === "vegetarian") {
       let newBool = true;
       if (e.target.value === "false" || e.target.value === false) {

@@ -1,7 +1,6 @@
 import React from "react";
 
 const PizzaForm = props => {
-  // console.log("props in Pizza Form:", props);
   return (
     <div className="form-row">
       <div className="col-5">

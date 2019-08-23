@@ -24,7 +24,7 @@ class App extends Component {
     const selectedPizza = this.state.pizzas.filter(
       pizza => pizza.id === parseInt(e.target.dataset.id, 10)
     );
-    console.log(selectedPizza[0]);
+    // console.log(selectedPizza[0]);
     this.setState({
       selectedPizzaId: selectedPizza[0].id,
       topping: selectedPizza[0].topping,
@@ -34,22 +34,7 @@ class App extends Component {
   };
 
   handleFormOnChange = e => {
-    // if (
-    //   e.target.name === "vegetarian" &&
-    //   (e.target.value === "false" || e.target.value === false)
-    // ) {
-    //   this.setState({ vegetarian: false });
-    // } else if (
-    //   e.target.name === "vegetarian" &&
-    //   (e.target.value === "true" || e.target.value === true)
-    // ) {
-    //   this.setState({ vegetarian: true });
-    // } else {
-    //   this.setState(
-    //     { vegetarian: newBool, [e.target.name]: e.target.value },
-    //     () => console.log(this.state)
-    //   );
-    // }
+    
     let newBool = true;
     if (e.target.name === "vegetarian") {
       if (e.target.value === "false" || e.target.value === false) {
@@ -61,37 +46,37 @@ class App extends Component {
     }
   };
 
-  // handleOnSubmit = e => {
-  //   e.preventDefault();
-  //   fetch("http://localhost:3000/pizzas", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json"
-  //     },
-  //     body: JSON.stringify({
-  //       id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
-  //       topping: this.state.topping,
-  //       size: this.state.size,
-  //       vegetarian: this.state.vegetarian
-  //     })
-  //   })
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       console.log("res in the post call", res);
-  //       return res;
-  //     })
-  //     .then(res => this.pessRerender(res))
-  //     .catch(err => console.log(err));
-  // };
-
   handleOnSubmit = e => {
+    // if selectedPizzaId, then it is a PATCH, else post
     e.preventDefault();
     if (this.state.selectedPizzaId) {
       this.handlePatch();
     } else {
       this.handlePost();
     }
+  };
+
+  handlePatch = () => {
+    fetch(`http://localhost:3000/pizzas/${this.state.selectedPizzaId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
+        topping: this.state.topping,
+        size: this.state.size,
+        vegetarian: this.state.vegetarian
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log("res in the patch call", res);
+        return res;
+      })
+      .then(res => this.pessRerender(res))
+      .catch(err => console.log(err));
   };
 
   handlePost = () => {
@@ -117,40 +102,30 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
-  handlePatch = () => {
-    fetch("http://localhost:3000/pizzas", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        id: this.state.selectedPizzaId ? this.state.selectedPizzaId : null,
-        topping: this.state.topping,
-        size: this.state.size,
-        vegetarian: this.state.vegetarian
-      })
-    })
-      .then(res => res.json())
-      .then(res => {
-        console.log("res in the patch call", res);
-        return res;
-      })
-      .then(res => this.pessRerender(res))
-      .catch(err => console.log(err));
-  };
-
   pessRerender = res => {
-    this.setState(
-      prevState => ({
-        topping: "",
-        size: "",
-        vegetarian: "",
-        selectedPizzaId: "",
-        pizzas: [...prevState.pizzas, res]
-      }),
-      () => console.log("state in pessRerender=", this.state)
-    );
+    if (this.state.selectedPizzaId) {
+      // true means it is a patch, so map and update the previous pizzafalse is a put
+      this.setState(
+        prevState => ({
+          topping: "",
+          size: "",
+          vegetarian: "",
+          selectedPizzaId: "",
+          pizzas: [...prevState.pizzas.map(pizza=> pizza.id === res.id ? pizza = res : pizza)]
+        })
+      );
+    } else {
+      // false is a post, so map through and append a pizza
+      this.setState(
+        prevState => ({
+          topping: "",
+          size: "",
+          vegetarian: "",
+          selectedPizzaId: "",
+          pizzas: [...prevState.pizzas, res]
+        })
+      );
+    }
   };
 
   render() {
@@ -158,7 +133,6 @@ class App extends Component {
       <Fragment>
         <Header />
         <PizzaForm
-          // selectedPizza={this.state.selectedPizza[0]}
           topping={this.state.topping}
           size={this.state.size}
           vegetarian={this.state.vegetarian}

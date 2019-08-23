@@ -1,12 +1,11 @@
 import React from "react";
 
 const Pizza = props => {
-  console.log("Props in pizza=", props);
   return (
     <tr>
       <td>{props.pizza.topping}</td>
       <td>{props.pizza.size}</td>
-      <td>{props.pizza.vegetarian}</td>
+      <td>{props.pizza.vegetarian ? "true" : "false"}</td>
       <td>
         <button
           type="button"
